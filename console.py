@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-    This is the AirBnB command interface for the AirBnB project that
-    inherits from the cmd class
+This is the AirBnB command interface for the AirBnB project that
+inherits from the cmd class
 """
 import cmd
 from models.base_model import BaseModel

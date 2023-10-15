@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
     This is the AirBnB command interface for the AirBnB project that
     inherits from the cmd class
@@ -15,9 +14,9 @@ from models.amenity import Amenity
 from models.review import Review
 
 
-class AirBnB_Console(cmd.Cmd):
+class HBNBCommand(cmd.Cmd):
     """
-    An instance AirBnB_Console command
+    An instance HBNBCommand
     
     Attributes:
         intro: a message to welcome the user
@@ -31,6 +30,52 @@ class AirBnB_Console(cmd.Cmd):
                     'State': State, 'City': City, 'Amenity': Amenity,
                     'Review': Review
                 }
+
+    def do_create(self, line):
+        """
+        create an instance of a class
+
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        """
+        if len(line) == 0:
+            print('** class name missing **')
+        elif line not in HBNBCommand.__classes:
+            print("** class doesn't exist **")
+        else:
+            new_model = HBNBCommand.__classes[line]()
+            new_model.save()
+            print(new_model.id)
+
+    def do_show(self, line):
+        """
+        Prints the string representation of an instance based
+        on the class name and id
+        """
+        args = line.split()
+
+        try:
+            className = args[0]
+            if className not in HBNBCommand.__classes:
+                print("** class doesn't exist **")
+                return
+        except:
+            print("** class name missing **")
+            return
+
+        try:
+            id = args[1]
+        except:
+            print('** instance id missing **')
+            return
+
+        key = className + "." + str(id)
+        fetch_dicts = storage.all()
+            
+        try:
+            print(fetch_dicts[key])
+        except Exception as e:
+            print("** no instance found **")
 
     def emptyline(self):
         """
@@ -51,4 +96,4 @@ class AirBnB_Console(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    AirBnB_Console().cmdloop()
+    HBNBCommand().cmdloop()

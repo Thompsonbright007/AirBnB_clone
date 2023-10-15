@@ -2,7 +2,7 @@
 """
     This defines a BaseModel class Model for the AirBnB_clone project
 """
-import uuid4
+import uuid
 import models
 from datetime import datetime
 

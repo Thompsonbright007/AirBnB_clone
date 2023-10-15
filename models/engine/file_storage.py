@@ -51,7 +51,7 @@ class FileStorage:
             new_dict[key] = obj.to_dict()
 
         with open(FileStorage.__file_path, 'w') as new_file:
-            new_file.write(new_dict)
+            new_file.write(json.dumps(new_dict))
 
     def reload(self):
         """
@@ -67,8 +67,8 @@ class FileStorage:
                 }
         try:
             with open(FileStorage.__file_path, "r") as loaded_f:
-                  fetched_dicts = json.load(loaded_f)
-                for key, obj in fetched_dict.values():
+                fetched_dicts = json.load(loaded_f)
+                for key, obj in fetched_dicts.items():
                     self.all()[key] = classes[obj['__class__']](**obj)
         except FileNotFoundError:
              return

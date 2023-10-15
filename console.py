@@ -207,6 +207,27 @@ class HBNBCommand(cmd.Cmd):
         except Exception as e:
             print("** no instance found **")
 
+    def do_count(self, line):
+        """
+        Returns the count of the parsed in class instance created
+
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        """
+        objects = storage.all()
+        objects_list = []
+
+        if not line:
+            print("** class doesn't exist **")
+        else:
+            if line not in HBNBCommand.__classes:
+                print("** class name missing **")
+            else:
+                for key, obj_val in objects.items():
+                    if line in key:
+                        objects_list.append(str(obj_val))
+                print(len(objects_list))
+
     def precmd(self, line):
         """
         pre command line function that process every args before being
@@ -218,7 +239,17 @@ class HBNBCommand(cmd.Cmd):
         arg = ''
         if '.' in line.split()[0]:
             res = line.split('.')
-            arg = res[1] + ' ' + res[0]
+            if res[1][-1] == ')' and res[1][-2] == '(':
+                arg = res[1][:-2] + ' ' + res[0]
+            elif res[1][-1] == ')' and res[1][-2] == '"':
+                entry = res[1][:-1].split('(')
+                if entry[0] == 'update':
+                    content = entry[1].split(',')
+                    arg = entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] + ' ' + content[1][2:-1] + ' ' + content[2]
+                else:
+                    arg = entry[0] + ' ' + res[0] + ' ' + entry[1][1:-1]
+            else:
+                arg = res[1] + ' ' + res[0]
         else:
             arg = line
 

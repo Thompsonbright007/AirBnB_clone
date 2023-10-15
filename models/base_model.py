@@ -2,7 +2,8 @@
 """
     This defines a BaseModel class Model for the AirBnB_clone project
 """
-import uuid4
+import uuid
+import models
 from datetime import datetime
 
 
@@ -14,6 +15,7 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """
         initializes an instance of the baseModel class
+        
         Args:
             *args(any): Unused parameter.
             **kwargs(dict): Key/value pairs of attributes.
@@ -28,6 +30,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            models.storage.new(self)
 
 
     def save(self):
@@ -36,6 +39,7 @@ class BaseModel:
         and saves an instance
         """
         self.updated_at = datetime.now()
+        models.storage.save()
 
     def __str__(self):
         """

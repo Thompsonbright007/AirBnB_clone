@@ -31,6 +31,12 @@ class HBNBCommand(cmd.Cmd):
                     'Review': Review
                 }
 
+    __types = {
+                "number_rooms": int, "number_bathrooms": int,
+                "max_guest": int, "price_by_night": int,
+                "latitude": float, "longitude": float
+            }
+
     def do_create(self, line):
         """
         create an instance of a class
@@ -51,6 +57,12 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints the string representation of an instance based
         on the class name and id
+
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        Raises:
+            An exception is raised is line is empty or if className does not
+            exist or if id is not present
         """
         args = line.split()
 
@@ -77,6 +89,127 @@ class HBNBCommand(cmd.Cmd):
         except Exception as e:
             print("** no instance found **")
 
+    def do_destroy(self, line):
+        """
+        Deletes an instance based on the class name and id
+        (save the change into the JSON file)
+
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        Raises:
+            An exception is raised is line is empty or if className does not
+            exist or if id is not present
+        """
+        args = line.split()
+
+        try:
+            className = args[0]
+            if className not in HBNBCommand.__classes:
+                print("** class doesn't exist **")
+                return
+        except:
+            print("** class name missing **")
+            return
+
+        try:
+            id = args[1]
+        except:
+            print('** instance id missing **')
+            return
+
+        key = className + "." + str(id)
+        fetch_dicts = storage.all()
+
+        try:
+            del(fetch_dicts[key])
+            storage.save()
+        except Exception as e:
+            print("** no instance found **")
+
+    def do_all(self, line):
+        """
+        Prints all string representation of all instances based
+        or not on the class name.
+
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        """
+        objects = storage.all()
+        objects_list = []
+
+        if not line:
+            print("** class doesn't exist **")
+        else:
+            if line not in HBNBCommand.__classes:
+                print("** class name missing **")
+            else:
+                for key, obj_val in objects.items():
+                    if line in key:
+                        objects_list.append(str(obj_val))
+                print(objects_list)
+
+    def do_update(self, line):
+        """
+        Updates an instance based on the class name and id by adding
+        or updating attribute (save the change into the JSON file)
+        
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        Usage:
+            update <class name> <id> <attribute name> "<attribute value>"
+        Rules:
+            Only one attribute can be updated at the time
+        Raises:
+            An exception is raised is line is empty or if className does not
+            exist or if id is not present
+        """
+        args = line.split()
+
+        try:
+            className = args[0]
+            if className not in HBNBCommand.__classes:
+                print("** class doesn't exist **")
+                return
+        except:
+            print("** class name missing **")
+            return
+
+        try:
+            id = args[1]
+        except:
+            print('** instance id missing **')
+            return
+
+        try:
+            attribute = args[2]
+        except:
+            print('** attribute name missing **')
+            return
+
+        try:
+            value = args[3]
+            # Properly parse the value
+            if "\"" in value:
+                value = value[1:-1]
+            else:
+                value = HBNBCommand.__types[attribute](value)
+        except:
+            print('** value missing **')
+            return
+
+        key = className + "." + str(id)
+        fetch_dicts = storage.all()
+
+        try:
+            target = fetch_dicts[key]
+            target[attribute] = value
+            target.save()
+        except Exception as e:
+            print("** no instance found **")
+
+    def pre_cmd(self, line):
+        print(f'Pre cmd {line}')
+
     def emptyline(self):
         """
         emptyline - This method called when we have an empty line.
@@ -86,12 +219,18 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_quit(self, line):
-        """a function that ends the program interaction"""
+        """
+        a function that ends the program interaction
+        """
+        print("Exit command to leave program")
+        print()
         return True
 
     def do_EOF(self, arg):
-        """EOF signal to exit the program."""
-        print("")
+        """
+        EOF signal to exit the program.
+        """
+        print()
         return True
 
 

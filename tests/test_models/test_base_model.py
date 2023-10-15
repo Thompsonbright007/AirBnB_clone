@@ -12,15 +12,15 @@ class TestBaseModel(unittest.TestCase):
     """
         Tests that the BaseModel works okay
     """
-    
+
     def setUp(self):
         """
-          Set up method
-          It renames the file_storage file to avoid conflicting with data
+        Set up method
+        It renames the file_storage file to avoid conflicting with data
         """
         if os.path.isfile("file.json"):
             os.rename("file.json", "backup.json")
-        
+
         self.model_1 = BaseModel()
         self.model_2 = BaseModel()
 
@@ -34,7 +34,8 @@ class TestBaseModel(unittest.TestCase):
         if os.path.isfile("backup.json"):
             os.rename("backup.json", "file.json")
 
-        del self.model_1                                                                                               del self.model_2
+        del self.model_1
+        del self.model_2
 
     def test_attributes_types(self):
         """
@@ -59,8 +60,10 @@ class TestBaseModel(unittest.TestCase):
         """
         Test that the object's string representation is correct
         """
-        msg_str = "[{}] ({}) {}".format(type(self.model_1).__name__,
-        self.model_1.id, self.model_1.__dict__)
+        msg_str = "[{}] ({}) {}".format(
+                type(
+                    self.model_1
+                    ).__name__, self.model_1.id, self.model_1.__dict__)
         self.assertEqual(str(self.model_1), msg_str)
 
     def test_save_method(self):
@@ -71,7 +74,8 @@ class TestBaseModel(unittest.TestCase):
         self.model_1.save()
         self.assertNotEqual(prev_date, self.model_1.updated_at)
         key = "BaseModel." + str(self.model_1.id)
-                                                                                                                       try:
+
+        try:
             with open("file.json", "r") as f_saved:
                 saved_file = json.load(f_saved)
 

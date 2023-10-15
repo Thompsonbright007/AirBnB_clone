@@ -10,15 +10,15 @@ class TestAmenity(unittest.TestCase):
     """
         Tests that the BaseModel works okay
     """
-    
+
     def setUp(self):
         """
-          Set up method
-          It renames the file_storage file to avoid conflicting with data
+        Set up method
+        It renames the file_storage file to avoid conflicting with data
         """
         if os.path.isfile("file.json"):
             os.rename("file.json", "backup.json")
-        
+
         self.model_1 = Amenity()
         self.model_2 = Amenity()
 
@@ -32,7 +32,8 @@ class TestAmenity(unittest.TestCase):
         if os.path.isfile("backup.json"):
             os.rename("backup.json", "file.json")
 
-        del self.model_1                                                                                               del self.model_2
+        del self.model_1
+        del self.model_2
 
     def test_attributes_types(self):
         """

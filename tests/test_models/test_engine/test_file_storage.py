@@ -13,23 +13,24 @@ class TestFileStorage(unittest.TestCase):
     Unit tests for attributes and methods
     Methods:
         setup() - Sets up the environment for testing
-        teardown() - restores the environment and restores files to their 
+        teardown() - restores the environment and restores files to their
                     previous state
         test_has_attributes() - Checks if all methods and attribute
                                 are present
         test_private_attributes - Tests violating access to private attribute
         test_all() - tests if the 'new' and 'all' method works as expected
-        test_reload() - check if contents of file.json are properly deserialised
+        test_reload() - check if contents of file.json are properly
+                        deserialised
     """
-    
+
     def setUp(self):
         """
-          Set up method
-          It renames the file_storage file to avoid conflicting with data
+        Set up method
+        It renames the file_storage file to avoid conflicting with data
         """
         if os.path.isfile("file.json"):
             os.rename("file.json", "backup_file.json")
-        
+
         self.model1 = BaseModel()
         self.storage1 = FileStorage()()
 
@@ -64,7 +65,7 @@ class TestFileStorage(unittest.TestCase):
     def test_private_attributes(self):
         """
         tests for illegal access of private attributes
-        
+
         Raise an error when a private attr is accessed
         """
         with self.assertRaises(AttributeError):
@@ -88,7 +89,7 @@ class TestFileStorage(unittest.TestCase):
         self.model1.save()
         self.assertTrue(os.path.isfile('file.json'))
         new_obj = BaseModel()
-        new_id = 'BaseModel.' + new_obj.id         
+        new_id = 'BaseModel.' + new_obj.id
         new_obj.save()
         del self.storage1._FileStorage__objects[new_id]
         self.storage1.reload()

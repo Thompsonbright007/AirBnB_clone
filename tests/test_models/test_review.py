@@ -10,15 +10,15 @@ class TestReview(unittest.TestCase):
     """
     Tests that the BaseModel works okay
     """
-    
+
     def setUp(self):
         """
-          Set up method
-          It renames the file_storage file to avoid conflicting with data
+        Set up method
+        It renames the file_storage file to avoid conflicting with data
         """
         if os.path.isfile("file.json"):
             os.rename("file.json", "backup.json")
-        
+
         self.model_1 = Review()
         self.model_2 = Review()
 
@@ -32,7 +32,8 @@ class TestReview(unittest.TestCase):
         if os.path.isfile("backup.json"):
             os.rename("backup.json", "file.json")
 
-        del self.model_1                                                                                               del self.model_2
+        del self.model_1
+        del self.model_2
 
     def test_attributes_types(self):
         """
@@ -44,7 +45,8 @@ class TestReview(unittest.TestCase):
 
     def test_attributes_exist(self):
         """
-        Test that class Review has all the required attributes and methods
+        Test that class Review has all the required attributes
+        and methods
         """
         self.assertTrue(hasattr(Review, 'place_id'))
         self.assertTrue(hasattr(Review, 'user_id'))
@@ -52,7 +54,8 @@ class TestReview(unittest.TestCase):
 
     def test_isinstance(self):
         """
-        Check that the created instance is an instance of the BaseModel class
+        Check that the created instance is an instance of the
+        BaseModel class
         """
         self.assertIsInstance(self.model_1, BaseModel)
 

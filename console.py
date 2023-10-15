@@ -202,13 +202,27 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             target = fetch_dicts[key]
-            target[attribute] = value
+            setattr(target, attribute, value)
             target.save()
         except Exception as e:
             print("** no instance found **")
 
-    def pre_cmd(self, line):
-        print(f'Pre cmd {line}')
+    def precmd(self, line):
+        """
+        pre command line function that process every args before being
+        parsed
+
+        Args:
+            line (str)- class name, parsed directly from the cmd-line
+        """
+        arg = ''
+        if '.' in line.split()[0]:
+            res = line.split('.')
+            arg = res[1] + ' ' + res[0]
+        else:
+            arg = line
+
+        return arg
 
     def emptyline(self):
         """

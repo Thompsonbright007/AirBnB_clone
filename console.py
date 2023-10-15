@@ -32,7 +32,7 @@ class HBNBCommand(cmd.Cmd):
                 }
 
     __types = {
-                "number_rooms": int, "number_bathrooms": int,
+                "age": int, "number_rooms": int, "number_bathrooms": int,
                 "max_guest": int, "price_by_night": int,
                 "latitude": float, "longitude": float
             }
@@ -191,8 +191,10 @@ class HBNBCommand(cmd.Cmd):
             # Properly parse the value
             if "\"" in value:
                 value = value[1:-1]
-            else:
+            elif attribute in HBNBCommand.__types:
                 value = HBNBCommand.__types[attribute](value)
+            else:
+                value = value
         except:
             print('** value missing **')
             return
@@ -241,11 +243,18 @@ class HBNBCommand(cmd.Cmd):
             res = line.split('.')
             if res[1][-1] == ')' and res[1][-2] == '(':
                 arg = res[1][:-2] + ' ' + res[0]
-            elif res[1][-1] == ')' and res[1][-2] == '"':
+            elif res[1][-1] == ')' and res[1][-2] == '}':
+                entry = res[1][:-1].split('(')
+                content = entry[1].split(',')
+                obj = content[1][1:].split(':')
+                arg = entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] + \
+                        ' ' + obj[0][2:-1] + '' + obj[1]
+            elif res[1][-1] == ')' and (res[1][-2] == '"' or res[1][-2] != '"'):
                 entry = res[1][:-1].split('(')
                 if entry[0] == 'update':
                     content = entry[1].split(',')
-                    arg = entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] + ' ' + content[1][2:-1] + ' ' + content[2]
+                    arg = entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] + \
+                            ' ' + content[1][2:-1] + '' + content[2]
                 else:
                     arg = entry[0] + ' ' + res[0] + ' ' + entry[1][1:-1]
             else:

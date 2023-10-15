@@ -23,7 +23,6 @@ class HBNBCommand(cmd.Cmd):
         prompt: The text issued on every cmd instance
         __classes - Contains a dictionary of all classes
     """
-    intro = "Welcome to the AirBnB_Clone project"
     prompt = "(hbnb) "
     __classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,
@@ -273,17 +272,13 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_quit(self, line):
-        """
-        a function that ends the program interaction
-        """
+        """a function that ends the program interaction\n"""
         print("Exit command to leave program")
         print()
         return True
 
     def do_EOF(self, arg):
-        """
-        EOF signal to exit the program.
-        """
+        """EOF signal to exit the program.\n"""
         print()
         return True
 

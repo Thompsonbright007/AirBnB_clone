@@ -18,13 +18,12 @@ class FileStorage:
     """
     Represents an instance of the FileStorage class
 
-    Attributes: 
+    Attributes:
         __file_path: A path to the JSON file
         __objects: A dict to store all objects
     """
     __file_path = 'file.json'
     __objects = {}
-
 
     def all(self):
         """
@@ -35,7 +34,7 @@ class FileStorage:
     def new(self, obj):
         """
         sets in __objects the obj with key <obj class name>.id
-        
+
         Args:
             obj: object to set to __object
         """
@@ -55,7 +54,8 @@ class FileStorage:
 
     def reload(self):
         """
-        deserializes the JSON file to __objects (only if the JSON file (__file_path) exists ; 
+        deserializes the JSON file to __objects (
+        only if the JSON file (__file_path) exists);
 
         Raises:
             an exception If the file doesn’t exist
@@ -71,4 +71,4 @@ class FileStorage:
                 for key, obj in fetched_dicts.items():
                     self.all()[key] = classes[obj['__class__']](**obj)
         except FileNotFoundError:
-             return
+            return

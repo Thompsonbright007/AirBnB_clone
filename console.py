@@ -17,7 +17,7 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """
     An instance HBNBCommand
-    
+
     Attributes:
         intro: a message to welcome the user
         prompt: The text issued on every cmd instance
@@ -70,19 +70,18 @@ class HBNBCommand(cmd.Cmd):
             if className not in HBNBCommand.__classes:
                 print("** class doesn't exist **")
                 return
-        except:
+        except Exception as e:
             print("** class name missing **")
             return
 
         try:
             id = args[1]
-        except:
+        except Exception as e:
             print('** instance id missing **')
             return
 
         key = className + "." + str(id)
         fetch_dicts = storage.all()
-            
         try:
             print(fetch_dicts[key])
         except Exception as e:
@@ -106,13 +105,13 @@ class HBNBCommand(cmd.Cmd):
             if className not in HBNBCommand.__classes:
                 print("** class doesn't exist **")
                 return
-        except:
+        except Exception as e:
             print("** class name missing **")
             return
 
         try:
             id = args[1]
-        except:
+        except Exception as e:
             print('** instance id missing **')
             return
 
@@ -151,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Updates an instance based on the class name and id by adding
         or updating attribute (save the change into the JSON file)
-        
+
         Args:
             line (str)- class name, parsed directly from the cmd-line
         Usage:
@@ -169,19 +168,19 @@ class HBNBCommand(cmd.Cmd):
             if className not in HBNBCommand.__classes:
                 print("** class doesn't exist **")
                 return
-        except:
+        except Exception as e:
             print("** class name missing **")
             return
 
         try:
             id = args[1]
-        except:
+        except Exception as e:
             print('** instance id missing **')
             return
 
         try:
             attribute = args[2]
-        except:
+        except Exception as e:
             print('** attribute name missing **')
             return
 
@@ -194,7 +193,7 @@ class HBNBCommand(cmd.Cmd):
                 value = HBNBCommand.__types[attribute](value)
             else:
                 value = value
-        except:
+        except Exception as e:
             print('** value missing **')
             return
 
@@ -246,14 +245,20 @@ class HBNBCommand(cmd.Cmd):
                 entry = res[1][:-1].split('(')
                 content = entry[1].split(',')
                 obj = content[1][1:].split(':')
-                arg = entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] + \
-                        ' ' + obj[0][2:-1] + '' + obj[1]
-            elif res[1][-1] == ')' and (res[1][-2] == '"' or res[1][-2] != '"'):
+                arg = (
+                    entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] +
+                    ' ' + obj[0][2:-1] + '' + obj[1]
+                )
+            elif res[1][-1] == ')' and (
+                    res[1][-2] == '"' or res[1][-2] != '"'
+                    ):
                 entry = res[1][:-1].split('(')
                 if entry[0] == 'update':
                     content = entry[1].split(',')
-                    arg = entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] + \
-                            ' ' + content[1][2:-1] + '' + content[2]
+                    arg = (
+                        entry[0] + ' ' + res[0] + ' ' + content[0][1:-1] +
+                        ' ' + content[1][2:-1] + '' + content[2]
+                    )
                 else:
                     arg = entry[0] + ' ' + res[0] + ' ' + entry[1][1:-1]
             else:

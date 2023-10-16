@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-    This defines a BaseModel class Model for the AirBnB_clone project
+This defines a BaseModel class Model for the AirBnB_clone project
 """
 import uuid
 import models
@@ -15,7 +15,7 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """
         initializes an instance of the baseModel class
-        
+
         Args:
             *args(any): Unused parameter.
             **kwargs(dict): Key/value pairs of attributes.
@@ -23,7 +23,8 @@ class BaseModel:
         if len(kwargs) != 0:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    self.__dict__[key] = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                    self.__dict__[key] = datetime.strptime(
+                            value, "%Y-%m-%dT%H:%M:%S.%f")
                 else:
                     self.__dict__[key] = value
         else:
@@ -31,7 +32,6 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             models.storage.new(self)
-
 
     def save(self):
         """
@@ -45,7 +45,8 @@ class BaseModel:
         """
         Returns string representation of the object
         """
-        return ("[{}] ({}) {}".format(self.__class__.__name__, self.id, self.__dict__))
+        return ("[{}] ({}) {}".format(
+            self.__class__.__name__, self.id, self.__dict__))
 
     def to_dict(self):
         """
